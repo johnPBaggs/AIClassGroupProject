@@ -85,6 +85,8 @@
      <Compile Include="Assets\Scripts\AIAgent\BehaviorScripts\Seek.js" />
      <Compile Include="Assets\Scripts\AIAgent\BehaviorScripts\Steering.js" />
      <Compile Include="Assets\Scripts\AIAgent\ColliderTester.js" />
+     <Compile Include="Assets\Scripts\AIAgent\GettingNavMesh.js" />
+     <Compile Include="Assets\Scripts\AIAgent\NavigationMesh\AIPolygon.js" />
      <Compile Include="Assets\Scripts\Animation\FanRotate.js" />
      <Compile Include="Assets\Scripts\Animation\FootstepHandler.js" />
      <Compile Include="Assets\Scripts\Animation\MechAnimation.js" />
