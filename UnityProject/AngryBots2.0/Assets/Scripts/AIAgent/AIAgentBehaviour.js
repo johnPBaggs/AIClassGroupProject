@@ -9,7 +9,7 @@ public class AIAgentBehaviour extends MonoBehaviour{
 
 	public var navMeshAgentCanMove : boolean = true; //represents if the Agent is moving freely or with the navigationMesh
 	
-	public var lightColor : Color[] = new Color[5]; //0 nothing (red), 1 going to goal (Green), 2 AimingAndStopped (blue), 3 Fleeing (magenta)
+	public var lightColor : Color[] = new Color[5]; //0 nothing (red), 1 going to goal (Green), 2 AimingAndStopped (blue), 3 Fleeing (magenta), 4 Healing (white)
 	public var behaviourLight : Light;
 	
 
@@ -20,6 +20,8 @@ public class AIAgentBehaviour extends MonoBehaviour{
 	public var isFleeing : boolean = false;
 	
 	public var navMeshAgentIsMoving : boolean = false;
+	
+	public var isHealing : boolean = false;
 	
 	public var enemyListSize : int = 0;
 	public var agentMovement : AIAgentAimingMovement;
@@ -46,6 +48,7 @@ public class AIAgentBehaviour extends MonoBehaviour{
 		lightColor[1] = Color.green;
 		lightColor[2] = Color.blue;
 		lightColor[3] = Color.magenta;
+		lightColor[4] = Color.white;
 		maxAgentHealth = transform.GetComponent.<Health>().maxHealth;
 //		behaviourLight = GetComponentInParent.GetType("Behaviour");
 		
@@ -67,11 +70,13 @@ public class AIAgentBehaviour extends MonoBehaviour{
 			behaviourLight.color = lightColor[3];
 		else if(isAiming == true)
 			behaviourLight.color = lightColor[2];
-		else 
+		else if(isHealing == true)
+			behaviourLight.color = lightColor[4];
+		else
 			behaviourLight.color = lightColor[1];
 	agentHealth = transform.GetComponent.<Health>().health;
 		if(enemyListSize > 0) {
-			if((agentHealth / maxAgentHealth) * 100 < 75) {
+			if((agentHealth / maxAgentHealth) * 100 < 98) {
 				if(isFleeing == false) {
 					navMeshAgent.notGoingToTarget();
 					isFleeing = true;
@@ -96,7 +101,12 @@ public class AIAgentBehaviour extends MonoBehaviour{
 		}
 		
 		if(enemyListSize <= 0) {
-			if(navMeshAgentIsMoving == false && numberOfTargetsReached < numberOfTargets) {
+			if((agentHealth / maxAgentHealth) * 100 < 98) {
+				isHealing = true;
+			} else {
+				isHealing = false;
+			}
+			if(navMeshAgentIsMoving == false && numberOfTargetsReached < numberOfTargets && isHealing == false) {
 				if(navMeshAgent.isStopped == false) {
 					navMeshAgent.goingToTarget();
 					navGetNewTargetAndMove();
