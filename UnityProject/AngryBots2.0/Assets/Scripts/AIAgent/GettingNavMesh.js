@@ -11,11 +11,45 @@ public class GettingNavMesh extends MonoBehaviour {
 	
  
 	public function Start () {
-		navMesh = new Mesh();
-  	  try {
+		//navMesh = new Mesh();
+		
+  	  //try {
+  	      
   	      // Create an instance of StreamReader to read from a file.
-  	       var sr = new StreamReader("/Volumes/2TB/AIClassGroupProject/UnityProject/AngryBots2.0/Assets/AngryBotsExportedNavMesh.obj");
-  	      // Read and display lines from the file until the end of the file is reached.
+  	      //var fileName : string = Application.dataPath +"/" + Path.GetFileNameWithoutExtension(EditorApplication.currentScene) + "UserNavMesh.obj";
+  	       var sr = new StreamReader(Application.dataPath + "/" + Path.GetFileNameWithoutExtension (EditorApplication.currentScene) + "UserNavMesh.obj");
+  	       polygonCount = int.Parse(sr.ReadLine());
+  	       //Debug.Log(polygonCount);
+  	       var polygons2 : AIPolygon[] = new AIPolygon[polygonCount];
+  	       for(var count : int = 0; count < polygonCount; count++) {
+  	       		var verticesCount : int = int.Parse(sr.ReadLine());
+  	       		//Debug.Log(verticesCount);
+  	       		var vertices : Vector3[] = new Vector3[verticesCount];
+  	       		for(var count2 : int = 0; count2 < verticesCount; count2++) {
+  	       			var x : float = float.Parse(sr.ReadLine());
+  	       			//Debug.Log(x);
+  	       			var y : float = float.Parse(sr.ReadLine());
+  	       			//Debug.Log(y);
+  	       			var z : float = float.Parse(sr.ReadLine());
+  	       			//Debug.Log(z);
+  	       			vertices[count2] = new Vector3(x, y, z);
+  	       		}
+  	       		var neighborCount : int = int.Parse(sr.ReadLine());
+  	       		//Debug.Log(neighborCount);
+  	       		var neighbors : int[] = new int[neighborCount];
+  	       		for(var count3 : int = 0; count3 < neighborCount; count3++) {
+  	       			neighbors[count3] = int.Parse(sr.ReadLine());
+  	       			//Debug.Log(neighbors[count3]);
+  	       		} 
+  	       		var id : int = int.Parse(sr.ReadLine());
+  	       		//Debug.Log(id);
+  	       		polygons2[count] = new AIPolygon(vertices, verticesCount, neighbors, neighborCount, id);
+  	       		this.polygons = polygons2;
+  	       		
+  	       }
+  	      
+  	      
+  	      /*// Read and display lines from the file until the end of the file is reached.
   	      var line : String = sr.ReadLine();
   	      line = sr.ReadLine();
   	      var count : int = 0;
@@ -73,16 +107,16 @@ public class GettingNavMesh extends MonoBehaviour {
 					triangles[triangleCount + 2] = int.Parse(substring4[3].Split("/"[0])[0]) - 1;  
 				}
 				navMesh.triangles = triangles;
-			}
+			}*/
 	        sr.Close();
-	    }
-	    catch (e) {
+	    //}
+	    //catch (e) {
 	        // Let the user know what went wrong.
-	        print("The file could not be read:");
-	        print(e.Message);
-	    }
+	    //    print("The file could not be read:");
+	    //    print(e.Message);
+	    //}
 
- 		navMesh.RecalculateBounds();
+ 		/*navMesh.RecalculateBounds();
  		enabled = false;
  		polygons = new AIPolygon[navMesh.triangles.length/3];
  		polygonCount = navMesh.triangles.length/3;
@@ -102,24 +136,29 @@ public class GettingNavMesh extends MonoBehaviour {
 			count1 += 3;
 			 count2 += 3;
 			  count3 += 3; 
-		}
+		}*/
+	}
+	
+	public function Update() {
+		//for(var count : int = 0; count < polygonCount; count++)
+			//polygons[count].drawSelf(Color.yellow);
 	}
 
 
-	function OnDrawGizmos () {
-		Gizmos.color = Color.yellow;
-		for(var count : int = 0; count < polygonCount; count++)
-			polygons[count].drawSelf(Gizmos.color);
+	//function OnDrawGizmos () {
+		//Gizmos.color = Color.yellow;
+		//for(var count : int = 0; count < polygonCount; count++)
+			//polygons[count].drawSelf(Gizmos.color);
 		
-	}
+	//}
 
-	function OnBecameVisible () {
-		enabled = true;	
-	}
+	//function OnBecameVisible () {
+	//	enabled = true;	
+//	}
 
-	function OnBecameInvisible () {
-		enabled = false;
-	}
+	//function OnBecameInvisible () {
+	//	enabled = false;
+	//}
 
 }
 

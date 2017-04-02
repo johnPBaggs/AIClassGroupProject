@@ -4,9 +4,9 @@
  *	This class has movement logic for the camera, Agent, and cursor.
  *	This class has logic for a user to move the Agent if the agent gets stuck
  */
-public class AIAgentMovement extends AIAgent{
+public class AIAgentAimingMovement extends AIAgent{
 
-	public var motor : AIAgentMovementMotor;
+	//public var motor : AIAgentMovementMotor;
 	public var cursorPrefab : GameObject;
 
 	// Settings
@@ -40,15 +40,15 @@ public class AIAgentMovement extends AIAgent{
 	private var screenMovementRight : Vector3;
 
 	private var agentCollider : AgentCollider;
+	
+	private var isAiming : boolean = false;
 
 	//This function is called whenever this object is awoken.
 	//	It is used to set the initial data inside certian variables that need to be initialized
 	public function Awake() {
 		agentCollider = GetComponent.<AgentCollider>();
 
-		motor.movementDirection = Vector2.zero;
-		motor.facingDirection = Vector2.zero;
-
+		
 		// Set main camera
 		mainCamera = Camera.main;
 		mainCameraTransform = mainCamera.transform;
@@ -86,11 +86,11 @@ public class AIAgentMovement extends AIAgent{
 	//	the camera movement and the cursor.
 	public function Update() {
 
-		motor.movementDirection = Input.GetAxis ("Horizontal") * screenMovementRight + Input.GetAxis ("Vertical") * screenMovementForward;
+		//motor.movementDirection = Input.GetAxis ("Horizontal") * screenMovementRight + Input.GetAxis ("Vertical") * screenMovementForward;
 		// Make sure the direction vector doesn't exceed a length of 1
 		// so the character can't move faster diagonally than horizontally or vertically
-		if (motor.movementDirection.sqrMagnitude > 1)
-			motor.movementDirection.Normalize();
+		//if (motor.movementDirection.sqrMagnitude > 1)
+		//	motor.movementDirection.Normalize();
 
 		// HANDLE CHARACTER FACING DIRECTION AND SCREEN FOCUS POINT
 
@@ -109,7 +109,7 @@ public class AIAgentMovement extends AIAgent{
 		// used to adjust the camera based on cursor or joystick position
 		var cameraAdjustmentVector : Vector3 = Vector3.zero;
 
-		#if !UNITY_EDITOR && (UNITY_XBOX360 || UNITY_PS3)
+		/*#if !UNITY_EDITOR && (UNITY_XBOX360 || UNITY_PS3)
 
 			// On consoles use the analog sticks
 			var axisX : float = Input.GetAxis("LookHorizontal");
@@ -118,14 +118,25 @@ public class AIAgentMovement extends AIAgent{
 
 			cameraAdjustmentVector = motor.facingDirection;
 
-		#else
+		#else*/
 
-		var tempTransform = agentCollider.currentTopOfList;
+		var tempPosition : Vector3;
+		var tempTransform : Transform;
 		var cursorScreenPosition : Vector3;
-		if(tempTransform == null)
-			cursorScreenPosition = Vector3 (0.5 * Screen.width, 0.5 * Screen.height, 0);
-		else
-			cursorScreenPosition = mainCamera.WorldToScreenPoint(tempTransform.position);
+		if(isAiming != true) {
+			//tempPosition = agentTransform.posi;
+			var playerDirection = agentTransform.forward;
+			var spawnDistance : float = 5.0;
+			tempPosition = agentTransform.position + playerDirection*spawnDistance;
+ 			//cursorScreenPosition = tempTransform.position + playerDirection*spawnDistance;
+		}
+		else {
+			tempTransform = agentCollider.currentTopOfList;
+		}
+		if(tempTransform != null)
+			tempPosition = tempTransform.position;
+		//else
+		cursorScreenPosition = mainCamera.WorldToScreenPoint(tempPosition);
 
 		// On PC, the cursor point is the mouse position
 		//var cursorScreenPosition : Vector3 = Input.mousePosition;
@@ -149,7 +160,7 @@ public class AIAgentMovement extends AIAgent{
 		motor.facingDirection = (cursorWorldPosition - agentTransform.position);
 		motor.facingDirection.y = 0;
 
-		#endif
+		//#endif
 
 		// Draw the cursor nicely
 		HandleCursorAlignment (cursorWorldPosition);
@@ -166,6 +177,8 @@ public class AIAgentMovement extends AIAgent{
 		cameraOffset = mainCameraTransform.position - agentTransform.position;
 	}
 
+
+	
 
 	//This function is used to take a Point on the screen and transform it to a real position in the 3D world
 	public static function ScreenPointToWorldPointOnPlane (screenPoint : Vector3, plane : Plane, camera : Camera) : Vector3 {
@@ -224,6 +237,10 @@ public class AIAgentMovement extends AIAgent{
 
 		// Set the scale of the cursor
 		cursorObject.localScale = Vector3.one * Mathf.Lerp (compensatedScale, 1, cursorSmallerWithDistance) * cursorScaleMultiplier;
+	}
+	
+	public function setIsAiming(value : boolean) {
+		isAiming = value;
 	}
 }
 

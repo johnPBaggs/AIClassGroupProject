@@ -20,7 +20,7 @@ public var horizontalMovement : float;
 public var verticalMovement : float;
 
 // Private memeber data
-private var aiAgentMovement : AIAgentMovement;
+private var aiAgentMovement : AIAgentAimingMovement;
 
 private var mainCamera : Camera;
 
@@ -52,7 +52,7 @@ function Awake () {
 	motor.movementDirection = Vector2.zero;
 	motor.facingDirection = Vector2.zero;
 	
-	aiAgentMovement = GetComponent.<AIAgentMovement>();
+	aiAgentMovement = GetComponent.<AIAgentAimingMovement>();
 	navmeshAgent = GetComponent.<NavMeshAgent>();
 	
 	// Set main camera

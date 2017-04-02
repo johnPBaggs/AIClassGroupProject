@@ -14,7 +14,7 @@ function Start () {
 }
 
 function OnTriggerStay (other : Collider) {
-	if (other.gameObject.tag == "Player")
+	if (other.tag == "Player" && other.GetType() == UnityEngine.CapsuleCollider) 
 		health.OnDamage (Time.deltaTime, Vector3.zero);
 }
 

@@ -8,6 +8,8 @@
  */
 public class AIAgent extends MonoBehaviour {
 
+	public var motor : AIAgentMovementMotor;
+
 	public var agentHealth : float; //the Health of the agent
 	public var agentTransform : Transform;//The transform class of the agent Object
 
@@ -16,6 +18,8 @@ public class AIAgent extends MonoBehaviour {
 
 	//This function is called when the program is ran and this object is awoken
 	public function Awake() {
+		motor.movementDirection = Vector2.zero;
+		motor.facingDirection = Vector2.zero;
 		agentHealth = transform.GetComponent.<Health>().health;
 		agentTransform = transform;
 		isDead = false;

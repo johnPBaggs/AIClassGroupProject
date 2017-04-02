@@ -22,11 +22,12 @@ public class AgentCollider extends AIAgent{
 	public var firingScript : TriggerOnMouseOrJoystick;
 	public var currentTopOfList : Transform = null;
 
-
+	public var agentBehaviour : AIAgentBehaviour;
 	//This is the first function that is called when the game starts and this object is awoken.
 	//	This sets the initial variables that need to be initialized
 	function Awake() {
 		navMeshAgent = gameObject.GetComponent.<AIAgentTryNav>();
+		agentBehaviour = gameObject.GetComponent.<AIAgentBehaviour>();
 		//firingScript = gameObject.GetComponent.<TriggerOnMouseOrJoystick>();
 	}
 
@@ -34,11 +35,12 @@ public class AgentCollider extends AIAgent{
 	//This is the function that is called whenever an object moves inside the Collider
 	//	This function will place the object in the list only if the object is an enemy
 	function OnTriggerEnter (otherObject : Collider) {
-		if(otherObject.gameObject.tag == "Enemy" && canSeeEnemy(otherObject) == true) {
+		if(otherObject.gameObject.tag == "Enemy" && canSeeEnemy(otherObject.gameObject) == true) {
 				enemyTriggerColliderList.Add(otherObject.gameObject);
 				listSize++;
 				Debug.Log("Enemy has entered trigger " + otherObject.gameObject.name + "   " + otherObject.gameObject.GetInstanceID() + "       " +otherObject.GetType());
-				stopNavAgent();
+				agentBehaviour.enemyListSize = listSize;
+				//stopNavAgent();
 		}
 	}
 
@@ -50,19 +52,21 @@ public class AgentCollider extends AIAgent{
 				Debug.Log("Enemy has exited trigger");
 				enemyTriggerColliderList.Remove(otherObject.gameObject);
 				listSize--;
+				agentBehaviour.enemyListSize = listSize;
 				if(navigationAgentEnables == false && listSize == 0) {
-					resumeNavAgent();
+					//resumeNavAgent();
 				}
 		}
 	}
 	
 	
 	function OnTriggerStay(otherObject : Collider) {
-		if(otherObject.gameObject.tag == "Enemy" && canSeeEnemy(otherObject) == true && enemyTriggerColliderList.IndexOf(otherObject.gameObject) == -1) {
+		if(otherObject.gameObject.tag == "Enemy" && canSeeEnemy(otherObject.gameObject) == true && enemyTriggerColliderList.IndexOf(otherObject.gameObject) == -1) {
 			Debug.Log("Found new enemy that has stayed in collider " + otherObject.gameObject.GetInstanceID());
 			enemyTriggerColliderList.Add(otherObject.gameObject);
 			listSize++;
-			stopNavAgent();
+			agentBehaviour.enemyListSize = listSize;
+			//stopNavAgent();
 		}
 	}
 
@@ -72,32 +76,38 @@ public class AgentCollider extends AIAgent{
 	//	This function will also check to see if an enemy was destroyed and if so it will be removed from the List.
 	function Update() {
 		super.Update();
-		if(listSize > 0) {
+		if(agentBehaviour.isAiming == true) {
+			if(enemyTriggerColliderList.Item[0] != null)
+				currentTopOfList = enemyTriggerColliderList.Item[0].transform;
+				//firingScript.aiAgentStartFiring();
+		}
+		/*if(listSize > 0) {
 			if(enemyTriggerColliderList.Item[0] != null)
 				currentTopOfList = enemyTriggerColliderList.Item[0].transform;
 				firingScript.aiAgentStartFiring();
-		}
-		if(navigationAgentEnables == false) {
-			if(listSize == 0) {
-				currentTopOfList = null;
-				resumeNavAgent();
-				firingScript.aiAgentStopFiring();
-			} else {
+		}*/
+		//if(navigationAgentEnables == false) {
+			//if(listSize == 0) {
+			//	currentTopOfList = null;
+			//	resumeNavAgent();
+			//	firingScript.aiAgentStopFiring();
+			//} else {
 				for(var count : int = 0; count < listSize; count++) {
-					if(enemyTriggerColliderList.Item[count] == null) {
+					if(enemyTriggerColliderList.Item[count] == null || enemyTriggerColliderList.Item[count].GetComponent.<Health>().health <= 0 || enemyTriggerColliderList.Item[count].activeSelf == false) {
 						enemyTriggerColliderList.RemoveAt(count);
 						listSize--;
+						agentBehaviour.enemyListSize = listSize;
 						count--;
 					}
 				}
-			}
-		}
+			//}
+		//}
 	}
 
 
 	//This function will test weither the AIAgent can see the enemy or not
 	//It will not beable to see the enemy if the enemy is behind a wall or another object
-	public function canSeeEnemy(enemyToCheck : Collider) : boolean {
+	public function canSeeEnemy(enemyToCheck : GameObject) : boolean {
 		var enemyDirection : Vector3 = (enemyToCheck.transform.position - transform.position);
 		var hit : RaycastHit;
 		Physics.Raycast (transform.position, enemyDirection, hit, enemyDirection.magnitude);
@@ -114,22 +124,6 @@ public class AgentCollider extends AIAgent{
 	}
 
 
-	//This function will stop the navigationMeshAgent from moving further
-	public function stopNavAgent() {
-		if(navMeshAgent) {
-			navMeshAgent.stop();
-			navigationAgentEnables = false;
-		}
-	}
-
-
-	//This function will make the navigationMeshAgent continue moving
-	public function resumeNavAgent() {
-		if(navMeshAgent) {
-			navMeshAgent.resume();
-			navigationAgentEnables = true;
-		}
-	}
 
 
 	//This function will return the first enemy object in the List

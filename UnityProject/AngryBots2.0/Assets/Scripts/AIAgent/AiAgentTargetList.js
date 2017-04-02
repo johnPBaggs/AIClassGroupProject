@@ -11,9 +11,9 @@ public class AiAgentTargetList extends MonoBehaviour {
 	public var listSize : int; //the size of the List
 
 
-	public var closestTarget : Vector3; //The position of the closestTarget
+	public var closestTarget : Transform; //The position of the closestTarget
 	public var closestTargetIndex : int; //The index in the list of the closestTarget
-	private var numberOfChanged : int = 0; //The number of targets that have been completed
+	public var numberOfChanged : int = 0; //The number of targets that have been completed
 	private var player : Transform; //The transform of the agent
 
 
@@ -29,7 +29,7 @@ public class AiAgentTargetList extends MonoBehaviour {
 	// This function will find the clases target to the player that has not been completed
 	public function findClosestTarget() {
 		if(numberOfChanged == listSize) {
-			closestTarget = transform.position;
+			closestTarget = transform;
 			closestTargetIndex = -1;
 		} else {
 			var closestPosition : float = float.MaxValue;
@@ -45,7 +45,7 @@ public class AiAgentTargetList extends MonoBehaviour {
 					}
 				}
 			}
-			closestTarget = priorityList[closestPositionIndex].position;
+			closestTarget = priorityList[closestPositionIndex];
 			closestTargetIndex = closestPositionIndex;
 		}
 	}

@@ -65,11 +65,14 @@
      <Compile Include="Assets\Scripts\AI\SpiderReturnMoveController.js" />
      <Compile Include="Assets\Scripts\AI\SwarmAI.js" />
      <Compile Include="Assets\Scripts\AIAgent\AIAgent.js" />
+     <Compile Include="Assets\Scripts\AIAgent\AIAgentAimingMovement.js" />
      <Compile Include="Assets\Scripts\AIAgent\AIAgentBehaviour.js" />
+     <Compile Include="Assets\Scripts\AIAgent\AIAgentEvade.js" />
      <Compile Include="Assets\Scripts\AIAgent\AIAgentFire.js" />
-     <Compile Include="Assets\Scripts\AIAgent\AIAgentMovement.js" />
+     <Compile Include="Assets\Scripts\AIAgent\AIAgentFlee.js" />
      <Compile Include="Assets\Scripts\AIAgent\AIAgentMovementController.js" />
      <Compile Include="Assets\Scripts\AIAgent\AIAgentMovementMotor.js" />
+     <Compile Include="Assets\Scripts\AIAgent\AIAgentSteering.js" />
      <Compile Include="Assets\Scripts\AIAgent\AIAgentTryNav.js" />
      <Compile Include="Assets\Scripts\AIAgent\AgentCollider.js" />
      <Compile Include="Assets\Scripts\AIAgent\AiAgentTargetList.js" />

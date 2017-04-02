@@ -1,14 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/AIAgent/GettingNavMesh.js">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/AIAgent/AIAgentTryNav.js">
     <Files>
-      <File FileName="Assets/Scripts/AIAgent/NavigationMesh/AIPolygon.js" Line="15" Column="37" />
-      <File FileName="Assets/Scripts/AIAgent/GettingNavMesh.js" Line="97" Column="21" />
+      <File FileName="Assets/Scripts/AIAgent/AIAgentBehaviour.js" Line="71" Column="41" />
+      <File FileName="Assets/Scripts/AIAgent/AiAgentTargetList.js" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/AIAgent/AIAgentTryNav.js" Line="186" Column="8" />
       <File FileName="Assets/Scripts/AIAgent/AgentCollider.js" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/AIAgent/AIAgent.js" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/AIAgent/AIAgentMovement.js" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/AIAgent/ExportNavMeshToObj.cs" Line="1" Column="1" />
-      <File FileName="Assets/Scripts/Fx/GlowPlane.js" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/AIAgent/AIAgentAimingMovement.js" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/AIAgent/AIAgentFlee.js" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Weapons/Health.js" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Misc/EndOfLevel.js" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Modules/TerminalHack.js" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
